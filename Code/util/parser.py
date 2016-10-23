@@ -4,12 +4,14 @@ from nltk.corpus import stopwords
 
 stop_words = set(stopwords.words('english'))
 
-filepath = "C:\\Users\\Archit\\OneDrive - purdue.edu\\Data\\Courses\\CS578 ML\\Project\\Train_2.csv"
+filepath = "../../Data/data/Train_21.csv"
+parsedPath = "../../Data/parsed_data.csv"
 
 def bigparse(filepath):
     print("In bigparse ... ")
     pattern = r'"([0-9]+)"'
     question = ""
+    f = open(parsedPath, 'w')
     with open(filepath,'r') as corpus:
         for line in corpus:
             tmp_line = line.replace('""','<empty>')
@@ -17,7 +19,7 @@ def bigparse(filepath):
             if(found):
                 # process the question
                 row = question.split('","')
-                print(row)
+                #print(row)
                 for i in range(len(row)):
                     tokenized_row = word_tokenize(row[i])
                     #row2 = word_tokenize(row[2])
@@ -28,7 +30,7 @@ def bigparse(filepath):
                             rowtemp.append(w.lower())
                     row[i] = rowtemp
                     #print(each)
-                print(row)
+                f.write(str(row))
                 
                 #print()
                 #print(word_tokenize(row[2]))
@@ -40,5 +42,6 @@ def bigparse(filepath):
                 #add to existing question
                 question = question+line
 
+    f.close()
 
 bigparse(filepath)
