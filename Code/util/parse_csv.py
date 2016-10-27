@@ -53,9 +53,10 @@ def tokenize_data(parsedPath, tokenizedPath):
         row["body"] = [word for word in word_tokenize(row["body"]) if word not in stopwords.words("english")]
         for each in pos_tag(row["body"]):
             if each[1] not in ['NN', 'JJ', 'NNS', 'VBG']:
-                row["body"].remove(each[0])
+               row["body"].remove(each[0])
 
-        row["title"] = [word for word in word_tokenize(row["title"]) if word not in stopwords.words("english")]
+        title = [word for word in word_tokenize(row["title"]) if word not in stopwords.words("english")]
+        row["title"] = title
         for each in pos_tag(row["title"]):
             if each[1] not in ['NN', 'JJ', 'NNS', 'VBG']:
                 row["title"].remove(each[0])
