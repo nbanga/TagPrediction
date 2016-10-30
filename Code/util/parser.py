@@ -4,8 +4,8 @@ from nltk.corpus import stopwords
 
 stop_words = set(stopwords.words('english'))
 
-filepath = "../../Data/data/Train_21.csv"
-parsedPath = "../../Data/parsed_data.json"
+#filepath = "../../Data/data/Train_21.csv"
+#parsedPath = "../../Data/parsed_data.json"
 
 def bigparse(filepath):
     print("In bigparse ... ")
