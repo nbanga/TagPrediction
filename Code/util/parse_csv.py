@@ -86,7 +86,7 @@ def tokenize_data(parsedPath, tokenizedPath):
     json.dump(feeds, tokenizedFile)
 
 def main():
-    #read_csv_to_dict(filepath,parsedPath)
+    read_csv_to_dict(filepath,parsedPath)
     tokenize_data(parsedPath, tokenizedPath)
 
 if __name__=='__main__':
