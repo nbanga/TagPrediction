@@ -7,7 +7,7 @@ from nltk.tag import pos_tag
 
 stop_words = set(stopwords.words('english'))
 
-filepath = "../../Data/data/Train_21.csv"
+filepath = "../../Data/data/train.csv"
 parsedPath = "../../Data/parsed_data.json"
 tokenizedPath = "../../Data/tokenized_data.json"
 
@@ -19,15 +19,10 @@ def read_csv_to_dict(filepath, parsedPath):
     out = json.dumps([row for row in reader])
 
     # remove code blocks
-    while 1:
-        if "<code>" in out:
-            start = out.find("<code>")
-            end = out.find("</code>") + 7
-            out = out.replace(out[start:end], "")
-        else:
-            break
-
     # remove html tags and http links
+    # remove tags
+    code_pattern = r'(\<code.*?<\/code>)'
+    out = re.sub(code_pattern,"",out)
     pattern = r'(<.*?>)'
     out = re.sub(pattern,"",out)
     http_pattern = r'(http.*?\/\/.*?\r?\n)'
@@ -48,6 +43,8 @@ def tokenize_data(parsedPath, tokenizedPath):
 
     feeds = []
     for row in data:
+        if (row["tags"]==None or row["body"]==None or row["id"]==None or row["body"]==None):
+            continue
         row["tags"] = word_tokenize(row["tags"])
 
         row["body"] = [word for word in word_tokenize(row["body"]) if word not in stopwords.words("english")]
