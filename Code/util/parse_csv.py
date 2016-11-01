@@ -1,15 +1,47 @@
 import re
 import csv
 import json
+import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tag import pos_tag
-
-stop_words = set(stopwords.words('english'))
+from nltk.stem.porter import PorterStemmer
 
 filepath = "../../Data/data/train.csv"
 parsedPath = "../../Data/parsed_data.json"
 tokenizedPath = "../../Data/tokenized_data.json"
+
+stemmer = PorterStemmer()
+
+def stem_tokens(tokens, stemmer):
+    stemmed = []
+    for item in tokens:
+        stemmed.append(stemmer.stem(item))
+    return stemmed
+	
+# converts text to stems
+def tokenize(text):
+    text = text.lower()
+    tokens = word_tokenize(text)
+    filtered = [w for w in tokens if not w in stopwords.words('english')]
+    stems = stem_tokens(filtered, stemmer)
+    return stems
+
+# converts text to pos_tags
+def pos_tokens(text):
+    stems = tokenize(text)
+    list_of_stems = list(map(lambda x: [x], stems))
+    result = [val for sublist in list_of_stems for val in pos_tag(sublist)]
+    return result
+	
+# convert text to filtered tokens with pos_tag in "NN,JJ,NNS"
+def filtered_tokens(text):
+    pos_tags = pos_tokens(text)
+    result = []
+    for each in pos_tags:
+        if each[1] in ['NN', 'JJ', 'NNS']:
+            result.append(each[0])
+    return result
 
 def read_csv_to_dict(filepath, parsedPath):
 
@@ -46,18 +78,9 @@ def tokenize_data(parsedPath, tokenizedPath):
         if (row["tags"]==None or row["body"]==None or row["id"]==None or row["body"]==None):
             continue
         row["tags"] = word_tokenize(row["tags"])
-
-        row["body"] = [word for word in word_tokenize(row["body"]) if word not in stopwords.words("english")]
-        for each in pos_tag(row["body"]):
-            if each[1] not in ['NN', 'JJ', 'NNS', 'VBG']:
-               row["body"].remove(each[0])
-
-        title = [word for word in word_tokenize(row["title"]) if word not in stopwords.words("english")]
-        row["title"] = title
-        for each in pos_tag(row["title"]):
-            if each[1] not in ['NN', 'JJ', 'NNS', 'VBG']:
-                row["title"].remove(each[0])
-
+        row["body"] = filtered_tokens(row["body"])
+        row["title"] = filtered_tokens(row["title"])
+	
         feeds.append(row)
 
     json.dump(feeds, tokenizedFile)
