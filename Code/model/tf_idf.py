@@ -23,6 +23,7 @@ X = []
 
 file = open(tokens,'r')
 data = json.load(file)
+file.close()
 
 index = 0
 for row in data:
@@ -46,7 +47,7 @@ for i in range(d):
     temp = [0.0]*l
     for word in p:
         temp[word_dict_tf[word][0]] = word_dict_tf[word][1]*(1.0*p.count(word)/len(p))
-    X[i] = Y
+    X[i] = temp
 
 label_file = open(labels,'r')
 label = json.load(label_file)
@@ -61,7 +62,6 @@ for i in range(d):
                 temp[label.index(sublist)] = 1
                 break
     Y[i] = temp
-    print (Y[i].count(1))
 
 label_file.close()
 
