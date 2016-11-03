@@ -8,7 +8,7 @@ top10 = {"c#":0, "java":0, "javascript":0, "c":0, "c++":0, "objective-c":0, "and
 filepath = "../../Data/tokenized/"
 tokenpath = "../../Data/tokenized_data.json"
 
-max_lines = 450
+max_lines = 500
 feed = []
 
 def split_by_label(data):
@@ -18,10 +18,9 @@ def split_by_label(data):
                 if label in row["tags"]:
                     feed.append(row)
                     top10[label] = top10[label] + 1
-
+                    break
 
 label_file = open(tokenpath,'w')
-
 for dir, subdir, files in os.walk(filepath):
     for filename in files:
         f = os.path.join(dir,filename)
