@@ -1,32 +1,36 @@
 import json
-import os,sys
+import os
 
-filepath = "../../Data/x_vector"
+# list of top ten tags
+# already curated from data
+top10 = {"c#":0, "java":0, "javascript":0, "c":0, "c++":0, "objective-c":0, "android":0, "jquery":0, "html":0, "php":0}
+
+filepath = "../../Data/tokenized/"
 tokenpath = "../../Data/tokenized_data.json"
-path = "../../Data/all_labels.json"
 
-def split_by_label(label,num_rows):
-    label_filepath = filepath + "/" + label + ".json"
-    feed = []
-    curr_file = open(tokenpath,'r')
-    data = json.load(curr_file)
+max_lines = 500
+feed = []
+
+def split_by_label(data):
     for row in data:
-        if label in row["tags"]:
-            feed.append(row)
-            if len(feed)==num_rows:
-                break
+        for label in top10.keys():
+            if (top10[label]<max_lines):
+                if label in row["tags"]:
+                    feed.append(row)
+                    top10[label] = top10[label] + 1
+                    break
 
-    #print(feed)
-    label_file = open(label_filepath,'w')
-    json.dump(feed,label_file)
-    label_file.close()
+label_file = open(tokenpath,'w')
+for dir, subdir, files in os.walk(filepath):
+    for filename in files:
+        f = os.path.join(dir,filename)
+        if not all(value == max_lines for value in top10.values()):
+            file = open(f,'r')
+            data = json.load(file)
+            split_by_label(data)
+        else:
+            break
 
-def main():
-    file = open(path,'r')
-    data = json.load(file)
-    for label in data:
-        print label
-        split_by_label(label[0][0],100)
-
-if __name__=='__main__':
-    main()
+json.dump(feed,label_file)
+label_file.close()
+file.close()

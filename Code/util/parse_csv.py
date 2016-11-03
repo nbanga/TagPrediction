@@ -1,13 +1,12 @@
 import re
 import csv
 import json
-import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tag import pos_tag
 from nltk.stem.porter import PorterStemmer
 
-filepath = "../../Data/data/train.csv"
+filepath = "../../Data/data/trainaa.csv"
 parsedPath = "../../Data/parsed_data.json"
 tokenizedPath = "../../Data/tokenized_data.json"
 
@@ -57,8 +56,8 @@ def read_csv_to_dict(filepath, parsedPath):
     out = re.sub(code_pattern,"",out)
     pattern = r'(<.*?>)'
     out = re.sub(pattern,"",out)
-    http_pattern = r'(http.*?\/\/.*?\r?\n)'
-    out = re.sub(http_pattern,"",out)
+    #http_pattern = r'(http.*?\/\/.*?\r?\n)'
+    #out = re.sub(http_pattern,"",out)
 
     out = out.lower()
     #decode('unicode_escape').encode('ascii','ignore').
@@ -77,10 +76,11 @@ def tokenize_data(parsedPath, tokenizedPath):
     for row in data:
         if (row["tags"]==None or row["body"]==None or row["id"]==None or row["body"]==None):
             continue
+
         row["tags"] = word_tokenize(row["tags"])
         row["body"] = filtered_tokens(row["body"])
         row["title"] = filtered_tokens(row["title"])
-	
+
         feeds.append(row)
 
     json.dump(feeds, tokenizedFile)
