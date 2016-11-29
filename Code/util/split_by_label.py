@@ -5,8 +5,8 @@ import os
 # already curated from data
 top10 = {"c#":0, "java":0, "javascript":0, "c":0, "c++":0, "objective-c":0, "android":0, "jquery":0, "html":0, "php":0}
 
-filepath = "../../Data/tokenized/"
-tokenpath = "../../Data/tokenized_data.json"
+filepath = "../Data/tokenized/"
+tokenpath = "../Data/tokenized_data.json"
 
 max_lines = 500
 feed = []

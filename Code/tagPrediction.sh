@@ -3,42 +3,52 @@
 #split Train.csv into intermediate files
 # Shell commands differ between OSes
 rm ../Data/data/train*.csv
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    split --bytes 500M --numeric-suffixes --suffix-length=2 --additional-suffix=".csv" ../Data/data/Train.csv ../Data/data/train
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    split -b 5m -a 3 ../Data/data/Train.csv ../Data/data/train
-fi
+split --bytes 1M --numeric-suffixes --suffix-length=4 --additional-suffix=".csv" ../Data/data/Train.csv ../Data/data/train
+
+for f in ../Data/data/train*.csv; do
+#    echo "$f"
+    sed -i '1i Id,Title,Body,Tags' $f
+done
 echo 'Split done.'
 
 #Call parser on each intermediate file to generate intermediatexy.csv
 #Call tokenizer on each intermediatexy.csv generate tokxy.csv
+echo "Create Tokenized files"
 python util/parse_csv.py
-echo "Tokenized files created"
+
 
 #Create map of labels and frequency
-python getlabels.py
-echo "top tags collected"
+echo "Collect top tags"
+python util/getlabels.py
+
 
 # Get 500 data points for top 10 labels
-python split_by_label.py
-echo "got 500 samples for top 10 tags"
+echo "Collect 500 samples for top 10 tags"
+python util/split_by_label.py
+
 
 #Create X and Y vectors
-python tf-idf.py
-echo "formed X and Y vectors"
+echo "Create X and Y vectors"
+python model/tf_idf.py
+
 
 # Call naive Bayes on the tokenized data
-python nb.py
-echo "Applied Naive Bayes to tokenized file"
+echo "Applying multiplicative Naive Bayes to tokenized file"
+python model/linear_nb.py
+
+
+# Call naive Bayes on the tokenized data
+echo "Applying Naive Bayes to tokenized file"
+python model/nb.py
+
+# Chose family of classifier for svm
+echo "Run svm with linear, rbf and 3rd order poly"
+python model/chose_family.py
+
 
 # Call linear SVM on the vectorized data
-echo "Applied linear svm to vectorized data"
-
-# Call Radial Basis kernel SVM
-echo "Applied RBF svm to vectorized data"
-
-# Call Polynomial Basis kerenl SVM
-echo "Applied polynomial svm to vectorized data"
+echo "Tune linear svm on vectorized data"
+python model/linear_svm_tuning.py
 
 #Algorithm complete.
 echo "Done"

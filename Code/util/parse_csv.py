@@ -5,10 +5,14 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.tag import pos_tag
 from nltk.stem.porter import PorterStemmer
+import glob
+from bs4 import BeautifulSoup
 
-filepath = "../../Data/data/trainaa.csv"
-parsedPath = "../../Data/parsed_data.json"
-tokenizedPath = "../../Data/tokenized_data.json"
+stop_words = set(stopwords.words('english'))
+
+#filepath = "../../Data/data/Train_21.csv"
+#parsedPath = "../../Data/parsed_data.json"
+#tokenizedPath = "../../Data/tokenized_data.json"
 
 stemmer = PorterStemmer()
 
@@ -17,7 +21,7 @@ def stem_tokens(tokens, stemmer):
     for item in tokens:
         stemmed.append(stemmer.stem(item))
     return stemmed
-	
+
 # converts text to stems
 def tokenize(text):
     text = text.lower()
@@ -32,7 +36,7 @@ def pos_tokens(text):
     list_of_stems = list(map(lambda x: [x], stems))
     result = [val for sublist in list_of_stems for val in pos_tag(sublist)]
     return result
-	
+
 # convert text to filtered tokens with pos_tag in "NN,JJ,NNS"
 def filtered_tokens(text):
     pos_tags = pos_tokens(text)
@@ -43,7 +47,6 @@ def filtered_tokens(text):
     return result
 
 def read_csv_to_dict(filepath, parsedPath):
-
     # read from csv into json format
     inputCsv = open(filepath, 'rU')
     reader = csv.DictReader(inputCsv)
@@ -73,21 +76,35 @@ def tokenize_data(parsedPath, tokenizedPath):
     data = json.load(parsedFile)
 
     feeds = []
+    count = 0
     for row in data:
-        if (row["tags"]==None or row["body"]==None or row["id"]==None or row["body"]==None):
+        if (row["tags"]==None or row["body"]==None or row["id"]==None or row["title"]==None):
             continue
-
         row["tags"] = word_tokenize(row["tags"])
-        row["body"] = filtered_tokens(row["body"])
+        row["body"] = filtered_tokens(BeautifulSoup(row["body"]).get_text())
         row["title"] = filtered_tokens(row["title"])
-
         feeds.append(row)
-
+        count += 1
     json.dump(feeds, tokenizedFile)
 
 def main():
-    read_csv_to_dict(filepath,parsedPath)
-    tokenize_data(parsedPath, tokenizedPath)
+    #get list of intermediate files
+    #files = glob.glob('../Data/data/train*.csv')
+    lfiles = glob.glob('../Data/data/train*.csv')
+
+    #get directory names
+    parsedDir = "../Data/intermediate"
+    tokenizedDir = "../Data/tokenized"
+
+    #generate filename for intermediate and tokenized files
+    j=0
+    for i in range(0,1):#len(lfiles)):
+        parsedPath = parsedDir+"/intermediate"+str(i)+".json"
+        tokenizedPath = tokenizedDir+"/tokenized"+str(i)+".json"
+
+        #for each file call both these methods
+        read_csv_to_dict(lfiles[i], parsedPath)
+        tokenize_data(parsedPath, tokenizedPath)
 
 if __name__=='__main__':
     main()
