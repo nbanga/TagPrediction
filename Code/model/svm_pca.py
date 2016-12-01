@@ -7,6 +7,8 @@ sys.path.append(root_dir)
 
 import model.svm_common as com
 
+print("start")
+
 filename = '../../Data/Uniform/X.csv'
 X_read = pd.read_csv(filename)
 
@@ -19,15 +21,18 @@ Y = np.array(Y_read)
 """
 # Step 1
 # Visualize data in 2D using TSNE and PCA Libraries
+print("Step 1 Visualize data in 2D using TSNE and PCA Libraries")
 destination = '../../Data/Plots/Visualize/plotTSNE.pdf'
 com.plotTSNE(np.array(X_read), np.array(Y_read), destination)
 """
 
+"""
 # Step 2
 # Visualize data in 2D using PCA written by hand
 # F is the optimum value of # of params containing 95% of information
+print("Step 2 Visualize data in 2D using PCA written by hand")
 F = com.getplotsPCA(np.array(X_read), np.array(Y_read))
-
+"""
 
 """
 # Step 3
@@ -38,12 +43,14 @@ loss = ['hinge','squared_hinge']
 k = 10
 # Set class number to do the tuning for (1 to 10, we did for 1)
 c = 1
+print("Step 3 Tune Models")
 f, z, mu, var = com.tuneModel(X, Y, C, loss, k, c)
 """
 
 """
 # Step 4
 # Plot number of optimum features for each fold
+print(" Step 4,5,6 Final Plots, and t-test")
 destination = '../../Data/Plots/SVM/plotNumFeat.pdf'
 com.plotNumFeat(f, destination)
 """
@@ -66,4 +73,8 @@ var2 = 0.001801053
 n = X.shape[0]
 x = (m1-m2)*math.sqrt(n)/(math.sqrt(var1+var2))
 df = math.pow((var1+var2),2)*(n-1)/(math.pow(var1,2)+math.pow(var2,2))
+print("x",x)
+print("degree of freedom",df)
 """
+
+print("finish")
