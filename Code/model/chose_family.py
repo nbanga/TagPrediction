@@ -18,7 +18,7 @@ y_data = np.array(y_read)
 n_classes = 1
 # number of classes you want to train for to pick the family
 
-split = 500
+split = 3000
 # Take first 3000 data points for training and rest for cross-validation
 
 C = [0.1,1,10]

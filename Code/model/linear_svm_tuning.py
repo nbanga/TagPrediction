@@ -19,7 +19,7 @@ n_classes = l
 # number of classes you want to train for
 # put n_classes = 5 or 10 since there l is 100, and it will long time to run
 
-split = 500
+split = 3000
 # Take first 3000 data points for training and rest for cross-validation
 
 C = [0.1,0.5,1,10,50,100,1000]

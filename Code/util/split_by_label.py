@@ -3,7 +3,7 @@ import os
 
 # list of top ten tags
 # already curated from data
-top10 = {"c#":0, "java":0, "javascript":0, "c":0, "c++":0, "objective-c":0, "android":0, "jquery":0, "html":0, "php":0}
+top10 = {"javascript": 0, "php": 0, "android": 0, "jquery": 0, "java": 0, "asp.net": 0, "c++": 0, "iphone": 0, "python": 0, "c": 0}
 
 filepath = "../Data/tokenized/"
 tokenpath = "../Data/tokenized_data.json"

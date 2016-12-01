@@ -5,10 +5,10 @@ from sklearn.ensemble import RandomForestClassifier
 from collections import OrderedDict
 import matplotlib.pyplot as plt
 
-filename = "../../Data/x_vector/X.csv"
+filename = "../Data/x_vector/X.csv"
 X_read = p.read_csv(filename)
 
-filename = "../../Data/x_vector/Y.csv"
+filename = "../Data/x_vector/Y.csv"
 y_read = p.read_csv(filename)
 
 X_data = np.array(X_read)
@@ -17,6 +17,7 @@ X_data = np.array(X_read)
 y_data = np.array(y_read)
 [n,l] = y_data.shape
 n_classes = l
+# Reduce n_classes values for lower running time
 
 split = 3000
 # Take first 3000 data points for training and rest for cross-validation
@@ -27,7 +28,9 @@ X_train = X_data[:split,:]
 X_test = X_data[split:,:]
 
 def multiVariateRandomRegression():
+    print ("Running multi variate random forest with sqrt, log2 and all features")
     num_estimators = [50, 75, 100, 125, 150]
+    # Reduce num_estimator values for lower running time
     ensemble_clfs = [
         ("RandomForestRegressor, max_features='sqrt'",
          RandomForestRegressor(warm_start=True, oob_score=True,
@@ -43,6 +46,7 @@ def multiVariateRandomRegression():
 
     for label, clf in ensemble_clfs:
         for each in num_estimators:
+            print ("Running multi variate random forest with ", label, "with ", each, "estimators")
             clf.set_params(n_estimators=each)
             clf.fit(X_data, y_data)
 
@@ -61,9 +65,12 @@ def multiVariateRandomRegression():
     plt.ylabel("OOB error rate")
     plt.legend(loc="upper right")
     plt.show()
+    plt.savefigure('../Data/Plots/RF/multi_variate.pdf')
 
 def singleVariateRandomRegression():
+    print ("Running single variate random forest with sqrt, log2 and all features")
     num_estimators = [50, 75, 100, 125, 150]
+    # Reduce num_estimator values for lower running time
     ensemble_clfs = [
         ("RandomForestClassifier, max_features='sqrt'",
          RandomForestRegressor(warm_start=True, oob_score=True,
@@ -82,6 +89,7 @@ def singleVariateRandomRegression():
 
     for label, clf in ensemble_clfs:
         for each in num_estimators:
+            print ("Running single variate random forest with ", label, "with ", each, "estimators")
             clf.set_params(n_estimators=each)
             clf.fit(X_train, y_train)
 
@@ -99,9 +107,12 @@ def singleVariateRandomRegression():
     plt.ylabel("OOB error rate")
     plt.legend(loc="upper right")
     plt.show()
+    plt.savefigure('../Data/Plots/RF/single_variate.pdf')
 
 def singleVariateRandomRegressionForAll():
+    print ("Running single variate random forest with sqrt features for top ten tags")
     num_estimators = [50, 75, 100, 125, 150]
+    # Reduce num_estimator values for lower running time
     clf = RandomForestClassifier(max_features='sqrt',
                                  oob_score=True,random_state=None)
     for i in range(n_classes):
