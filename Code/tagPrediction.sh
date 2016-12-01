@@ -13,7 +13,7 @@
 ##    echo "$f"
 #    sed -i '1i Id,Title,Body,Tags' $f
 #done
-echo 'Split done.'
+#echo 'Split done.'
 ##############################
 # Uncomment till here
 ##############################
