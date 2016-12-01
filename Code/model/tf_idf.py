@@ -8,9 +8,9 @@ import numpy
 import math
 import csv
 
-path = '../../Data/x_vector'
-labels = '../../Data/all_labels.json'
-tokens = '../../Data/tokenized/tokenized_data.json'
+path = '../Data/x_vector'
+labels = '../Data/all_labels.json'
+tokens = '../Data/tokenized_data.json'
 
 word_dict = {}
 X = []
@@ -70,6 +70,8 @@ for i in range(d):
 
 Y_row.extend(Y)
 label_file.close()
+
+print len(X_row), len(Y_row)
 
 with open(path + "/X.csv", "wb") as f:
     writer = csv.writer(f)

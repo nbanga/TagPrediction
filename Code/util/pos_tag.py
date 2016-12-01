@@ -45,7 +45,7 @@ def filtered_tokens(text):
     return result
 
 	
-file_path = "../../Data/data/all_labels.json"
+file_path = "../Data/all_labels.json"
 label_file = open(file_path,'r')
 labels = label_file.read()
 #print(freq_pos(labels).most_common(100))
