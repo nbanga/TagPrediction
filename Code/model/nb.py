@@ -39,8 +39,6 @@ for row in data:
                 else:
                     count[word][tag] += 1
 
-                    #print count
-
 #get count of occurances of a tag across documents
 docCount = {}
 for row in data:
@@ -92,7 +90,6 @@ def predict(doc):
             prod += math.log(Pr(word, tag))
         e[tag] += prod
 
-    #    getPerf()
     #get key with max value in dictionary
     predictedTags = sorted(e, key=e.__getitem__)
     print predictedTags[-3:]
