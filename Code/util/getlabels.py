@@ -3,18 +3,17 @@ import operator
 import os
 
 #input file
-filepath = "../../Data/tokenized"
+filepath = "../Data/tokenized/"
 
 #output file
-lpath = "../../Data/all_labels.json"
+lpath = "../Data/all_labels.json"
 max_index = 10
 
 fw = open(lpath,'w')
 labels = dict()
 
-def getLabels(file):
-    print("In getLabels ...")
-    fin = open(file,'r')
+def getLabels(fil):
+    fin = open(fil,'r')
     data = json.load(fin)
 
     for row in data:
@@ -24,16 +23,11 @@ def getLabels(file):
             else:
                 labels.setdefault(each,1)
 
-    sorted_labels = sorted(labels.items(), key = operator.itemgetter(1), reverse = True)
-    json.dump(sorted_labels[0:max_index], fw)
-    print("Exit getLabels ...")
+for dir, subdir, files in os.walk(filepath):
+    for filename in files:
+        f = os.path.join(dir,filename)
+	print f 
+        getLabels(f)
 
-def main():
-    for dir, subdir, files in os.walk(filepath):
-        for filename in files:
-            f = os.path.join(dir,filename)
-            getLabels(f)
-
-
-if __name__ == '__main__':
-    main()
+sorted_labels = sorted(labels.items(), key = operator.itemgetter(1), reverse = True)
+json.dump(sorted_labels[0:max_index], fw)
