@@ -14,6 +14,9 @@ alltags = []
 count = {}
 entry = 0
 for row in data:
+    #if entry < 1500:
+    # uncomment above for full run
+    # comment below line for full run
     if entry < 1:
         testrows.append(row["title"])
         exptags.append(row["tags"])
@@ -22,7 +25,10 @@ for row in data:
     else:
         break
 
-data = data[1:]
+#data = data[1500:]
+# uncomment above for full run
+# comment below line for full run
+data = data[10:]
 
 for row in data:
     title = row["title"]
@@ -92,7 +98,7 @@ def predict(doc):
 
     #get key with max value in dictionary
     predictedTags = sorted(e, key=e.__getitem__)
-    print predictedTags[-3:]
+    print "Predicted Tags", (predictedTags[-3:])
     return predictedTags[-3:]
 
 TP = 0
@@ -100,19 +106,31 @@ FN = 0
 FP = 0
 TN = 0
 for i in range(len(testrows)):
-    print exptags[i]
+    print "Expected Tags", (exptags[i])
     acttags = predict(testrows[i])
     [tp, fn, fp, tn] = perf(set(exptags[i]), set(acttags))
     TP += tp
     FN += fn
     FP += fp
     TN += tn
-    print "---"
+    print
 
-print ("Performance summary")
-print ("Accuracy : ", 1.0*(TP+TN)/(TP+FP+FN+TN))
-print ("Error : ", 1.0*(FP+FN)/(TP+FP+FN+TN))
-print ("Recall/Sensitivity : ", 1.0*TP/(TP+FN))
-print ("Precision : ", 1.0*TP/(TP+FP))
-print ("Specificity : ", 1.0*TN/(TN+FP))
-print ("*********DONE**********")
+recall = TP*1.0/(TP+FN)
+if TP==0 and FP==0:
+    precision = 0
+else:
+    precision = TP*1.0/(TP+FP)
+
+if recall==0 and precision==0:
+    f1_score = 0
+else:
+    f1_score = 2.0*recall*precision/(recall+precision)
+
+print "Performance summary"
+print "Accuracy:", "\t", 1.0*(TP+TN)/(TP+FP+FN+TN)
+print "Error:\t", 1.0*(FP+FN)/(TP+FP+FN+TN)
+print "Recall:","\t",  1.0*TP/(TP+FN)
+print "Precision:","\t",  1.0*TP/(TP+FP)
+print "Specificity:","\t",  1.0*TN/(TN+FP)
+print "F1 score:", "\t", f1_score
+print

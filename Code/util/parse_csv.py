@@ -10,10 +10,6 @@ from bs4 import BeautifulSoup
 
 stop_words = set(stopwords.words('english'))
 
-#filepath = "../../Data/data/Train_21.csv"
-#parsedPath = "../../Data/parsed_data.json"
-#tokenizedPath = "../../Data/tokenized_data.json"
-
 stemmer = PorterStemmer()
 
 def stem_tokens(tokens, stemmer):
@@ -59,11 +55,8 @@ def read_csv_to_dict(filepath, parsedPath):
     out = re.sub(code_pattern,"",out)
     pattern = r'(<.*?>)'
     out = re.sub(pattern,"",out)
-    #http_pattern = r'(http.*?\/\/.*?\r?\n)'
-    #out = re.sub(http_pattern,"",out)
 
     out = out.lower()
-    #decode('unicode_escape').encode('ascii','ignore').
 
     # write data to json file
     outputJson = open(parsedPath,'w')
@@ -81,7 +74,7 @@ def tokenize_data(parsedPath, tokenizedPath):
         if (row["tags"]==None or row["body"]==None or row["id"]==None or row["title"]==None):
             continue
         row["tags"] = word_tokenize(row["tags"])
-        row["body"] = filtered_tokens(BeautifulSoup(row["body"]).get_text())
+        row["body"] = filtered_tokens(BeautifulSoup(row["body"],"html.parser").get_text())
         row["title"] = filtered_tokens(row["title"])
         feeds.append(row)
         count += 1
@@ -89,7 +82,6 @@ def tokenize_data(parsedPath, tokenizedPath):
 
 def main():
     #get list of intermediate files
-    #files = glob.glob('../Data/data/train*.csv')
     lfiles = glob.glob('../Data/data/train*.csv')
 
     #get directory names
@@ -97,7 +89,6 @@ def main():
     tokenizedDir = "../Data/tokenized"
 
     #generate filename for intermediate and tokenized files
-    j=0
     for i in range(0,1):#len(lfiles)):
         parsedPath = parsedDir+"/intermediate"+str(i)+".json"
         tokenizedPath = tokenizedDir+"/tokenized"+str(i)+".json"

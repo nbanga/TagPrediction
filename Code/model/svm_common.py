@@ -13,7 +13,6 @@ from sklearn.decomposition import PCA
 import pylab as pl
 from itertools import cycle
 def plot_2D(data, target, target_names, destination):
-    
     colors = cycle('rgbcmykw')
     target_ids = range(len(target_names))
     pl.figure()
@@ -25,12 +24,10 @@ def plot_2D(data, target, target_names, destination):
                    c=c, label=label)
     pl.legend()
     pl.savefig(destination)
-    pl.show()
     
 #target_names = ['1','2','3','4','5','6','7','8'] #,'8','9'];
 #plot_2D(X_proj[y2==1], y3[y2==1], target_names, destination)
 """
-
 
 """
 Input: Projected matrix X
@@ -68,16 +65,14 @@ def plotTSNE(X, Y, destination):
     X_tsne = TSNE(learning_rate=100).fit_transform(x_2)
     plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_2)
     plt.title('Data Visualization in 2D using TSNE Library')
-    destination = '../../Data/Plots/Visualize/plotTSNE.pdf'
+    destination = '../Data/Plots/Visualize/plotTSNE.pdf'
     plt.savefig(destination)
-    plt.show()
     
     X_pca = PCA().fit_transform(x_2)
     plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y_2)
     plt.title('Data Visualization in 2D using PCA Library')
-    destination = '../../Data/Plots/Visualize/plotPCALibrary.pdf'
+    destination = '../Data/Plots/Visualize/plotPCALibrary.pdf'
     plt.savefig(destination)
-    plt.show()
 
 
 """
@@ -129,8 +124,6 @@ def plotev(ev, destination):
     plt.title('Plot for finding optimal # of features for PCA')
     plt.grid(True)
     plt.savefig(destination)
-    plt.show()
-
 
 """
 Input: Matrix X to be projected
@@ -175,8 +168,6 @@ def plotpca(x, y, label, destination):
     plt.ylabel('2nd PCA Component', fontsize=12)
     plt.title('Data plot in 2D using PCA (w/o Library)')
     plt.savefig(destination)
-    plt.show()
-    
     
 """
 Plots two plots, first to know optimum value of # of features in rpojected data,
@@ -189,7 +180,7 @@ def getplotsPCA(X, Y):
     X_train = X
     p = 0.95
     u, Z, ev, F = pcalearn(X_train, p)
-    destination = '../../Data/Plots/Visualize/plotEigenValues.pdf'
+    destination = '../Data/Plots/Visualize/plotEigenValues.pdf'
     plotev(ev, destination)
     
     X_test = X
@@ -202,7 +193,7 @@ def getplotsPCA(X, Y):
     y_p = x_2[:,1]
     # Actual class
     labels = y_2
-    destination = '../../Data/Plots/Visualize/plotPCAManual.pdf'
+    destination = '../Data/Plots/Visualize/plotPCAManual.pdf'
     plotpca(x_p, y_p, labels, destination)
     
     return F
@@ -322,8 +313,6 @@ def plotF1Score(z, C, loss, destination):
     plt.title(title)
     plt.grid(True)
     plt.savefig(destination)
-    plt.show()
-    
     
 """
 Input:
@@ -350,10 +339,10 @@ def tuneModel(X, Y, C, loss, k, c):
     for losd in loss:          
         for cd in C:
             expno = i+1
-            print("Experiment No. ", expno)
-            print("Training for loss =", losd, "and C =", cd)            
+            print "Experiment No. ", expno
+            print "Training for loss: ",losd, "and C: ",cd
             f, z[i,:], mu[i], var[i] = kfoldcv(cd, losd, X, Y, k, c)
-            destination = '../../Data/Plots/SVM/plotF1Exp' + str(expno) + '.pdf'
+            destination = '../Data/Plots/SVM/plotF1Exp' + str(expno) + '.pdf'
             plotF1Score(z[i,:], cd, losd, destination)
             i = i+1
     
@@ -379,8 +368,6 @@ def plotNumFeat(f, destination):
     plt.title(title)
     plt.grid(True)
     plt.savefig(destination)
-    plt.show()
-
 
 """
 Input:
@@ -413,6 +400,5 @@ def plotAvgF1(z, mu, destination):
     plt.title('Average F1 Score for different experiments')
     plt.grid(True)
     plt.savefig(destination)
-    plt.show()
-    
+
     return mu2, var2

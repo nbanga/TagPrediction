@@ -3,10 +3,17 @@ import numpy as np
 from sklearn import svm
 import time
 
-filename = "../Data/x_vector/X.csv"
-X_read = p.read_csv(filename)
+# filename = "../Data/x_vector/X.csv"
+# X_read = p.read_csv(filename)
+#
+# filename = "../Data/x_vector/Y.csv"
+# y_read = p.read_csv(filename)
 
-filename = "../Data/x_vector/Y.csv"
+#comment above for running skewed
+#uncomment below to run for skewed
+filename = "../Data/x_vector/X_skewed.csv"
+X_read = p.read_csv(filename)
+filename = "../Data/x_vector/Y_skewed.csv"
 y_read = p.read_csv(filename)
 
 X_data = np.array(X_read)
@@ -21,7 +28,10 @@ n_classes = 1
 split = 3000
 # Take first 3000 data points for training and rest for cross-validation
 
-C = [0.1,1,10]
+#C = [0.1,1,10]
+# uncomment above for full run
+# comment below line for full run
+C = [0.1]
 kernel = ['linear','rbf','poly']
 
 # Get training data
@@ -29,7 +39,6 @@ X_train = X_data[:split,:]
 
 # Get cross validation data
 X_test = X_data[split:,:]
-print X_test.shape
 
 for i in range(n_classes):
     
@@ -41,14 +50,14 @@ for i in range(n_classes):
     tuned_C = -1
     tuned_kernel = ''
     
-    print("Training Classifier for Tag #",i+1)
+    print "Training Classifier for Tag #",i+1
 
     for c in C:
         
         for ker in kernel:
             
-            print("C:",c)
-            print("kernel:",ker)
+            print "C:",c
+            print "kernel:",ker
 	
             clf = svm.SVC(C=c, kernel=ker, degree=3, gamma='auto', coef0=0.0, 
                           shrinking=True, probability=True, tol=0.001, 
@@ -83,14 +92,14 @@ for i in range(n_classes):
             print("False Negatives:",fn)
             print("True Negatives:",tn)
             """
-            accuracy = (tp+tn)/(tp+tn+fp+fn)
-            error = (fp+fn)/(tp+tn+fp+fn)
-            recall = tp/(tp+fn)
+            accuracy = 1.0*(tp+tn)/(tp+tn+fp+fn)
+            error = 1.0*(fp+fn)/(tp+tn+fp+fn)
+            recall = 1.0*tp/(tp+fn)
             if tp==0 and fp==0:
                 precision = 0
             else:
-                precision = tp/(tp+fp)
-            specificity = tn/(tn+fp)
+                precision = 1.0*tp/(tp+fp)
+            specificity = 1.0*tn/(tn+fp)
             """
             print("Train Accuracy:",clf.score(X_train,y_train))
             print("Test Accuracy:",accuracy)
@@ -102,15 +111,15 @@ for i in range(n_classes):
             if recall==0 and precision==0:
                 f1_score = 0
             else:
-                f1_score = 2*recall*precision/(recall+precision)
-            print("F1 Score:",f1_score)
+                f1_score = 2.0*recall*precision/(recall+precision)
+            print "F1 Score:",f1_score
+            print
                 
             if(f1_score>max_f_score):
                 max_f_score = f1_score
                 tuned_C = c
                 tuned_kernel = ker
     
-    print("Elapsed Time",time.time()-start)       
-    print("Tuned C:",tuned_C)
-    print("Tuned Kernel:",tuned_kernel)
-    print("Tuned F1 Score",max_f_score)
+    print "Tuned C:\t",tuned_C
+    print "Tuned Kernel:\t",tuned_kernel
+    print "Tuned F1 Score:\t",max_f_score

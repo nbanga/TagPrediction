@@ -26,7 +26,6 @@ def getLabels(fil):
 for dir, subdir, files in os.walk(filepath):
     for filename in files:
         f = os.path.join(dir,filename)
-	print f 
         getLabels(f)
 
 sorted_labels = sorted(labels.items(), key = operator.itemgetter(1), reverse = True)

@@ -3,10 +3,17 @@ import numpy as np
 from sklearn import svm
 import time
 
-filename = "../Data/x_vector/X.csv"
-X_read = p.read_csv(filename)
+# filename = "../Data/x_vector/X.csv"
+# X_read = p.read_csv(filename)
+#
+# filename = "../Data/x_vector/Y.csv"
+# y_read = p.read_csv(filename)
 
-filename = "../Data/x_vector/Y.csv"
+#comment above for running skewed
+#uncomment below to run for skewed
+filename = "../Data/x_vector/X_skewed.csv"
+X_read = p.read_csv(filename)
+filename = "../Data/x_vector/Y_skewed.csv"
 y_read = p.read_csv(filename)
 
 X_data = np.array(X_read)
@@ -15,14 +22,17 @@ X_data = np.array(X_read)
 y_data = np.array(y_read)
 [n,l] = y_data.shape
 
-n_classes = l
+n_classes = 1
 # number of classes you want to train for
 # put n_classes = 5 or 10 since there l is 100, and it will long time to run
 
 split = 3000
 # Take first 3000 data points for training and rest for cross-validation
 
-C = [0.1,0.5,1,10,50,100,1000]
+#C = [0.1,0.5,1,10,50,100,1000]
+# uncomment above for full run
+# comment below line for full run
+C = [0.5,1,10]
 loss = ['hinge','squared_hinge']
 penalty = ['l2']
 
@@ -51,7 +61,7 @@ def train_model():
         tuned_loss = ''
         tuned_penalty = ''
         
-        print("Tuning Classifier for Tag #",i+1)
+        print "Tuning Classifier for Tag #",i+1
     
         for c in C:
             
@@ -59,11 +69,11 @@ def train_model():
                 
                 for pen in penalty:
             
-                    """
-                    print("C:",c)
-                    print("loss:",los)
-                    print("penalty:",pen)
-                    """
+                    
+                    print "C:",c
+                    print "loss:",los
+                    print "penalty:",pen
+                    
                     
                     clf = svm.LinearSVC(penalty=pen, loss=los, dual=True, 
                                      tol=0.0001, C=c, multi_class='ovr', 
@@ -100,11 +110,11 @@ def train_model():
                     """
                     #accuracy = (tp+tn)/(tp+tn+fp+fn)
                     #error = (fp+fn)/(tp+tn+fp+fn)
-                    recall = float(tp)/(tp+fn)
+                    recall = 1.0*tp/(tp+fn)
                     if tp==0 and fp==0:
                         precision = 0
                     else:
-                        precision = float(tp)/(tp+fp)
+                        precision = 1.0*tp/(tp+fp)
                     #specificity = tn/(tn+fp)
                     """
                     print("Train Accuracy:",clf.score(X_train,y_train))
@@ -117,8 +127,9 @@ def train_model():
                     if recall==0 and precision==0:
                         f1_score = 0
                     else:
-                        f1_score = 2*recall*precision/(recall+precision)
-                    #print("F1 Score:",f1_score)
+                        f1_score = 2.0*recall*precision/(recall+precision)
+                    print "F1 Score:",f1_score
+                    print
                     
                     if(f1_score>max_f_score):
                         max_f_score = f1_score
@@ -127,11 +138,10 @@ def train_model():
                         tuned_penalty = pen
                         theta[i] = clf.coef_
         
-        print("Elapsed Time",time.time()-start)       
-        print("Tuned C:",tuned_C)
-        print("Tuned loss:",tuned_loss)
-        print("Tuned Penalty:",tuned_penalty)
-        print("Tuned F1 Score",max_f_score)
+        print "Tuned C:\t",tuned_C
+        print "Tuned loss:\t",tuned_loss
+        print "Tuned Penalty:\t",tuned_penalty
+        print "Tuned F1 Score:\t",max_f_score
         
     return theta
     
