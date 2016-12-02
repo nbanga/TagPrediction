@@ -3,18 +3,18 @@ import numpy as np
 from sklearn import svm
 import time
 
-# filename = "../Data/x_vector/X.csv"
-# X_read = p.read_csv(filename)
-#
-# filename = "../Data/x_vector/Y.csv"
-# y_read = p.read_csv(filename)
+filename = "../Data/x_vector/X.csv"
+X_read = p.read_csv(filename)
+
+filename = "../Data/x_vector/Y.csv"
+y_read = p.read_csv(filename)
 
 #comment above for running skewed
 #uncomment below to run for skewed
-filename = "../Data/x_vector/X_skewed.csv"
-X_read = p.read_csv(filename)
-filename = "../Data/x_vector/Y_skewed.csv"
-y_read = p.read_csv(filename)
+# filename = "../Data/x_vector/X_skewed.csv"
+# X_read = p.read_csv(filename)
+# filename = "../Data/x_vector/Y_skewed.csv"
+# y_read = p.read_csv(filename)
 
 X_data = np.array(X_read)
 [n,d] = X_data.shape

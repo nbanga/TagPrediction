@@ -67,12 +67,14 @@ def plotTSNE(X, Y, destination):
     plt.title('Data Visualization in 2D using TSNE Library')
     destination = '../Data/Plots/Visualize/plotTSNE.pdf'
     plt.savefig(destination)
+    plt.close()
     
     X_pca = PCA().fit_transform(x_2)
     plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y_2)
     plt.title('Data Visualization in 2D using PCA Library')
     destination = '../Data/Plots/Visualize/plotPCALibrary.pdf'
     plt.savefig(destination)
+    plt.close()
 
 
 """
@@ -124,6 +126,7 @@ def plotev(ev, destination):
     plt.title('Plot for finding optimal # of features for PCA')
     plt.grid(True)
     plt.savefig(destination)
+    plt.close()
 
 """
 Input: Matrix X to be projected
@@ -168,6 +171,7 @@ def plotpca(x, y, label, destination):
     plt.ylabel('2nd PCA Component', fontsize=12)
     plt.title('Data plot in 2D using PCA (w/o Library)')
     plt.savefig(destination)
+    plt.close()
     
 """
 Plots two plots, first to know optimum value of # of features in rpojected data,
@@ -313,6 +317,7 @@ def plotF1Score(z, C, loss, destination):
     plt.title(title)
     plt.grid(True)
     plt.savefig(destination)
+    plt.close()
     
 """
 Input:
@@ -368,6 +373,7 @@ def plotNumFeat(f, destination):
     plt.title(title)
     plt.grid(True)
     plt.savefig(destination)
+    plt.close()
 
 """
 Input:
@@ -400,5 +406,6 @@ def plotAvgF1(z, mu, destination):
     plt.title('Average F1 Score for different experiments')
     plt.grid(True)
     plt.savefig(destination)
+    plt.close()
 
     return mu2, var2
