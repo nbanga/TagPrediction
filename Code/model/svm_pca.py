@@ -28,6 +28,7 @@ com.plotTSNE(np.array(X_read), np.array(Y_read), destination)
 # F is the optimum value of # of params containing 95% of information
 print "Step 2 Visualize data in 2D using PCA developed by us"
 F = com.getplotsPCA(np.array(X_read), np.array(Y_read))
+print "Optimum number of features:", F
 
 # Step 3
 # Customize C to train different models
@@ -35,12 +36,12 @@ F = com.getplotsPCA(np.array(X_read), np.array(Y_read))
 #C = [0.1,0.5,1,10,0.05,0.01,0.005,0.001,0.0005]
 # uncomment above for full run
 # comment below line for full run
-C = [0.1]
+C = [0.001]
 
 #loss = ['hinge','squared_hinge']
 # uncomment above for full run
 # comment below line for full run
-loss = ['hinge']
+loss = ['squared_hinge']
 
 # Set number of folds
 k = 10
@@ -71,5 +72,5 @@ var2 = 0.001801053
 n = X.shape[0]
 x = (m1-m2)*math.sqrt(n)/(math.sqrt(var1+var2))
 df = math.pow((var1+var2),2)*(n-1)/(math.pow(var1,2)+math.pow(var2,2))
-#print("x",x)
+print("t-statistics:",x)
 print "degree of freedom",df

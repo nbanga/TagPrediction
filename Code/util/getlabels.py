@@ -26,7 +26,8 @@ def getLabels(fil):
 for dir, subdir, files in os.walk(filepath):
     for filename in files:
         f = os.path.join(dir,filename)
-        getLabels(f)
+	print "filename: ",f, "\n"
+	getLabels(f)
 
 sorted_labels = sorted(labels.items(), key = operator.itemgetter(1), reverse = True)
 json.dump(sorted_labels[0:max_index], fw)

@@ -34,13 +34,13 @@ def multiVariateRandomRegression():
     num_estimators = [50]
 
     ensemble_clfs = [
-        ("max_features='sqrt'",
+        ("RandomForestRegressor, max_features='sqrt'",
          RandomForestRegressor(warm_start=True, oob_score=True,
                                 max_features="sqrt",random_state=None)),
-        ("max_features='log2'",
+        ("RandomForestRegressor, max_features='log2'",
          RandomForestRegressor(warm_start=True, max_features='log2',
                                 oob_score=True,random_state=None)),
-        ("max_features=None",
+        ("RandomForestRegressor, max_features=None",
          RandomForestRegressor(warm_start=True, max_features=None,
                                 oob_score=True,random_state=None))
     ]
@@ -69,19 +69,19 @@ def multiVariateRandomRegression():
     plt.savefig('../Data/Plots/RF/multi_variate.pdf')
 
 def singleVariateRandomRegression():
-    num_estimators = [50, 75, 100, 125, 150]
+    #num_estimators = [50, 75, 100, 125, 150]
     # uncomment above for full run
     # comment below line for full run
-    #num_estimators = [50]
+    num_estimators = [50]
 
     ensemble_clfs = [
-        ("max_features='sqrt'",
+        ("RandomForestClassifier, max_features='sqrt'",
          RandomForestRegressor(warm_start=True, oob_score=True,
                                max_features="sqrt",random_state=None)),
-        ("max_features='log2'",
+        ("RandomForestClassifier, max_features='log2'",
          RandomForestRegressor(warm_start=True, max_features='log2',
                                oob_score=True,random_state=None)),
-        ("max_features=None",
+        ("RandomForestClassifier, max_features=None",
          RandomForestRegressor(warm_start=True, max_features=None,
                                oob_score=True,random_state=None))
     ]
@@ -260,9 +260,9 @@ def singleVariateRandomRegressionForAll():
         #print "Feature Map", feature_map
 
 
-#multiVariateRandomRegression()
+multiVariateRandomRegression()
 singleVariateRandomRegression()
-#singleVariateRandomRegressionForAll()
+singleVariateRandomRegressionForAll()
 
 
 

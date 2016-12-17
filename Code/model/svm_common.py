@@ -238,15 +238,15 @@ def getF1Score(C, loss, X_train, y_train, X_test, y_test):
             fn+=1
         if y_test[j]==-1 and y_pred[j]==-1:
             tn+=1
-    recall = tp/(tp+fn)
+    recall = 1.0*tp/(tp+fn)
     if tp==0 and fp==0:
         precision = 0
     else:
-        precision = tp/(tp+fp)
+        precision = 1.0*tp/(tp+fp)
     if recall==0 and precision==0:
         f1_score = 0
     else:
-        f1_score = 2*recall*precision/(recall+precision)    
+        f1_score = 2.0*recall*precision/(recall+precision)    
     return f1_score
     
     
@@ -400,7 +400,7 @@ def plotAvgF1(z, mu, destination):
     plt.axis([0,exps+1,min(mu)-0.01,max(mu2)+0.01])
     plot1, = plt.plot(x, mu, 'bo', label = 'All folds')
     plot2, = plt.plot(x, mu2, 'ro', label = 'but last')
-    plt.legend(handles=[plot1, plot2], loc=4)
+    plt.legend([plot1, plot2], loc=4)
     plt.xlabel('Experiment #', fontsize=12)
     plt.ylabel('Average F1 Score', fontsize=12)
     plt.title('Average F1 Score for different experiments')
